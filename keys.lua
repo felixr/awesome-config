@@ -1,5 +1,8 @@
 -- vim: ft=lua fdm=marker: 
 local keydoc = require("keydoc")
+local capi = {
+    client = client
+}
 
 -- Key bindings
 globalkeys = awful.util.table.join(
@@ -58,6 +61,11 @@ globalkeys = awful.util.table.join(
 
     awful.key({modkey, "Shift"}, "n", shifty.send_prev, "Send to prev"),
     awful.key({modkey}, "n", shifty.send_next, "Send to next"),
+    awful.key({modkey, "Mod1"}, "n", function() 
+        local c = capi.client.focus
+        local t = shifty.add()
+        awful.client.movetotag(t, c)
+    end, "Move to new tag"),
     -- awful.key({modkey, "Control"},
     --           "n",
     --           function()
