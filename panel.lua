@@ -77,7 +77,7 @@ function taglist:new(s, args)
         awful.button({mk}, 1, awful.client.movetotag),
         awful.button({}, 3, awful.tag.viewtoggle),
         awful.button({mk}, 3, function(t) menu.create.tags(nil, t) end),
-        awful.button({}, 8, awful.client.toggletag),
+        awful.button({"Shift"}, 1, awful.client.toggletag),
         awful.button({}, 4, awful.tag.viewnext),
         awful.button({}, 5, awful.tag.viewprev)
     )
