@@ -4,25 +4,39 @@ local capi = {
     client = client
 }
 
+
+local change_focus = function(dir) 
+    return function()
+            local curlayout = awful.layout.get(mouse.screen);
+            if  awful.layout.getname(curlayout) == "max" then
+                awful.client.focus.byidx(1)
+                client.focus:raise()
+            else
+                awful.client.focus.bydirection(dir)
+                if client.focus then client.focus:raise() end
+            end
+        end
+end
+
 -- Key bindings
 globalkeys = awful.util.table.join(
     keydoc.group("Navigation"), --{{{
-    awful.key({modkey,}, "j",
-        function()
-            awful.client.focus.byidx(1)
-            if client.focus then client.focus:raise() end
-        end, "Next client"),
-    awful.key({modkey,}, "k",
-        function()
-            awful.client.focus.byidx(-1)
-            if client.focus then client.focus:raise() end
-        end, "Prev client"),
+
+    awful.key({modkey,}, "h", change_focus("left"), "Focus left"),
+    awful.key({modkey,}, "l", change_focus("right"), "Focus right"),
+    awful.key({modkey,}, "j", change_focus("down"), "Focus down"), 
+    awful.key({modkey,}, "k", change_focus("up"), "Focus up"), 
         
     -- Layout manipulation
     awful.key({modkey, "Shift"}, "j",
-              function() awful.client.swap.byidx(1) end, "Swap next"),
+              function() awful.client.swap.bydirection("down") end, "Swap down"),
     awful.key({modkey, "Shift"}, "k",
-              function() awful.client.swap.byidx(-1) end, "Swap prev"),
+              function() awful.client.swap.bydirection("up") end, "Swap up"),
+    awful.key({modkey, "Shift"}, "h",
+              function() awful.client.swap.bydirection("left") end, "Swap left"),
+    awful.key({modkey, "Shift"}, "l",
+              function() awful.client.swap.bydirection("right") end, "Swap right"),
+
     awful.key({modkey}, "s",
               function()
                   awful.screen.focus_relative(1)
@@ -46,12 +60,12 @@ globalkeys = awful.util.table.join(
 
     keydoc.group("Layout"), -- {{{
     awful.key({modkey,}, "=", function() awful.tag.setmwfact(0.5) end, "Master 50/50"),
-    awful.key({modkey,}, "l", function() awful.tag.incmwfact(0.05) end, "Master  size+"),
-    awful.key({modkey,}, "h", function() awful.tag.incmwfact(-0.05) end, "Master size-"),
-    awful.key({modkey, "Shift"}, "h",
-              function() awful.tag.incnmaster(1) end, "Master num+"),
-    awful.key({modkey, "Shift"}, "l",
-              function() awful.tag.incnmaster(-1) end, "Master num-"),
+    -- awful.key({modkey,}, "l", function() awful.tag.incmwfact(0.05) end, "Master  size+"),
+    -- awful.key({modkey,}, "h", function() awful.tag.incmwfact(-0.05) end, "Master size-"),
+    -- awful.key({modkey, "Shift"}, "h",
+    --           function() awful.tag.incnmaster(1) end, "Master num+"),
+    -- awful.key({modkey, "Shift"}, "l",
+    --           function() awful.tag.incnmaster(-1) end, "Master num-"),
     awful.key({modkey, "Control"}, "h", function() awful.tag.incncol(1) end, "Column +"),
     awful.key({modkey, "Control"}, "l", function() awful.tag.incncol(-1) end, "Column -"),
     awful.key({modkey}, "space",
@@ -92,7 +106,7 @@ globalkeys = awful.util.table.join(
     awful.key({modkey}, "e", revelation, "Show all windows"), -- all clients
     awful.key({modkey, "Shift"},          -- only terminals
               "e",
-              function() revelation({class="URxvt"}) end, "Show all Terminals"
+              function() revelation({class=client.focus.class}) end, "Show same class "
               ),
    -- KeyDoc
    awful.key({ modkey, }, "F1", keydoc.display),
@@ -129,6 +143,11 @@ globalkeys = awful.util.table.join(
                 end
                 awful.util.spawn(command)
             end),
+     -- awful.key({ modkey }, "z",
+     --        function ()
+     --            if 0 == os.execute("zenity --question --title='Quit?' --text='Quit?'") then
+     --            end
+     --        end),
 
     awful.key({modkey}, "x",
               function()
@@ -144,10 +163,10 @@ globalkeys = awful.util.table.join(
 
     -- Applications
     keydoc.group("Apps"), -- {{{
-    awful.key({modkey,}, "Return", terminal, "Terminal"),
-    awful.key({modkey, "Mod1"}, "e", editor, "Editor"),
-    awful.key({modkey, "Mod1"}, "f", filemgr, "File mgr"),
-    awful.key({modkey}, "XF86Calculator", function() awful.util.spawn("i3lock -c 000000 -d") end, "Lock screen"),
+    awful.key({modkey, }, "Return", terminal, "Terminal"),
+    awful.key({modkey, }, "e", editor, "Editor"),
+    awful.key({modkey, }, "f", filemgr, "File mgr"),
+    awful.key({modkey, }, "XF86Calculator", function() awful.util.spawn("i3lock -c 000000 -d") end, "Lock screen"),
     -- }}}
     
     keydoc.group("Volume"), -- {{{

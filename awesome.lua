@@ -31,8 +31,8 @@ mwfact80 = ((screen.count() - 1) > 0 and 0.4) or 0.52
 
 shifty.config.layouts = {
     awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
     awful.layout.suit.max,
-    awful.layout.suit.tile.left,
     awful.layout.suit.fair,
     awful.layout.suit.floating,
 }
@@ -43,16 +43,26 @@ shifty.config.tags = {
         exclusive   = true,
         max_clients = 1,
         position    = 1,
+        layout = awful.layout.suit.tile,
     },
     mail = {
-        init     = true,
+        exclusive   = true,
         position = 2,
-        screen   = 2,
+    },
+    ide = {
+        layout = awful.layout.suit.max,
+        position = 7
     },
     ds = {
         layout   = awful.layout.suit.max,
-        position = 7,
+        position = 8,
         slave    = false,
+    },
+    rdp = {
+        layout   = awful.layout.suit.max,
+        position = 9,
+        slave    = false,
+        exclusive= true
     },
 }
 
@@ -68,9 +78,19 @@ shifty.config.apps = {
         slave          = true,
     },
     {
+        match = {".*IntelliJ IDEA.*"},
+        tag = "ide",
+        float = false
+    },
+    {
         match = {"libreoffice.*"},
         float = false,
         tag   = "office",
+    },
+    {
+        match = {"remmina"},
+        float = false,
+        tag   = "rdp",
     },
     {
         match = {"vim", "gvim"},
@@ -109,7 +129,9 @@ shifty.config.defaults = {
     nmaster = 1,
 }
 
+-- sloppy focus ?
 shifty.config.sloppy = false
+-- Add titlebars to all clients when the float? 
 shifty.config.float_bars = true
 shifty.modkey = modkey
 
@@ -121,27 +143,37 @@ root.buttons(awful.util.table.join(
 
 shifty.config.clientkeys = awful.util.table.join(
     awful.key({modkey, "Shift"}, "c", function(c) c:kill() end),
-    awful.key({modkey, "Control"}, "space", awful.client.floating.toggle),
+    -- awful.key({modkey, "Shift"}, "c", function(c)
+    --             local cmd = "zenity --question --title='Quit?' --text='Quit?' && echo kill"
+    --             local f_reader = io.popen(cmd)
+    --             local str = assert(f_reader:read('*a'))
+    --             f_reader:close()
+    --             if "kill" == str then
+    --                 c:kill()
+    --             end
+    -- end),
+    keydoc.group("Window props"), 
+            awful.key({modkey, "Control"}, "space", awful.client.floating.toggle, "Toggle floating"),
     awful.key({modkey, "Control"}, "Return",
-              function(c) c:swap(awful.client.getmaster()) end),
-    awful.key({modkey, "Shift"}, "s", awful.client.movetoscreen),
-    awful.key({modkey, "Shift"}, "r", function(c) c:redraw() end),
-    awful.key({modkey,}, "t", function(c) c.ontop = not c.ontop end),
+              function(c) c:swap(awful.client.getmaster()) end, "Make master"),
+    -- awful.key({modkey, "Shift"}, "s", awful.client.movetoscreen),
+    awful.key({modkey, "Shift"}, "r", function(c) c:redraw() end, "Redraw"),
+    awful.key({modkey,}, "t", function(c) c.ontop = not c.ontop end, "Toggle on-top"),
     awful.key({modkey,}, "n",
         function(c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
             c.minimized = true
-        end),
+        end, "Minimize"),
     awful.key({modkey,}, "m",
         function(c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end, "Maximize")
 )
 
 for s = 1, screen.count() do
-    panel({
+    local p = panel({
             s = s,
             position='top',
             modkey=modkey,

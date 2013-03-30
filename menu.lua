@@ -147,7 +147,7 @@ local function gen_clients_menu(menu, c, filter, func)
     end
     menu.items = {
         {
-            "⬛⬛⬛ " .. tb.client.title(c) .. " ⬛⬛⬛",
+            "▀▀▀ " .. tb.client.title(c) .. " ▀▀▀",
             function() end
         },
         {

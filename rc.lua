@@ -8,10 +8,16 @@ require("naughty")
 
 keydoc = require("keydoc")
 
+stacktrace = ""
+
 confdir = awful.util.getdir("config")
 local rc, err = loadfile(confdir .. "/awesome.lua");
 if rc then
-    rc, err = pcall(rc);
+    rc, err = pcall(rc)
+    -- function()
+    --     stacktrace = debug.traceback()
+    --     add
+    -- end)
     if rc then
         return;
     end
@@ -26,5 +32,5 @@ end
 naughty.notify(
     {text="Awesome crashed during startup on " ..
             os.date("%d%/%m/%Y %T:\n\n")
-            .. err .. "\n", timeout = 0}
+            .. err .. "\n" .. stacktrace .. "\n", timeout = 0}
     )
