@@ -16,6 +16,7 @@ local capi = {
     widget = widget
 }
 
+local obvious = require("obvious")
 local menu = require('menu')
 
 module('panel')
@@ -203,6 +204,7 @@ function new(t, args)
             p.widgets.prompt,
             layout = awful.widget.layout.horizontal.leftright
         },
+        obvious.battery(),
         p.widgets.layoutbox,
         p.widgets.clock,
         p.widgets.systray,
