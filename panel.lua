@@ -10,6 +10,7 @@ local pairs = pairs
 local setmetatable = setmetatable
 
 local awful = require('awful')
+local tag = require('awful.tag')
 local capi = {
     client = client,
     mouse = mouse,
@@ -46,6 +47,48 @@ setmetatable(clock,
              {
                  __call = function(t, ...) return clock:new(...) end
              })
+
+layoutinfo = {}
+function layoutinfo:new(s, args)
+    local screen = screen or 1
+    local args = args or {}
+    args.type = "textbox"
+    local w = capi.widget(args)
+    local function layout_name(scr)
+        local pretty_names = {}
+        pretty_names.tile       = "[tile]" 
+        pretty_names.tileleft   = "[l-tl]"
+        pretty_names.tilebottom = "[b-tl]"
+        pretty_names.tiletop    = "[t-tl]"
+        pretty_names.fairv      = "[vair]"
+        pretty_names.fairh      = "[hair]"
+        pretty_names.spiral     = "[spir]"
+        pretty_names.dwindle    = "[dwin]"
+        pretty_names.max        = "[maxx]"
+        pretty_names.fullscreen = "[Full]"
+        pretty_names.magnifier  = "[Magn]"
+        pretty_names.floating   = "[flt*]" 
+
+        local l = awful.layout.getname(awful.layout.get(scr))
+        return pretty_names[l] or l
+    end
+
+    w.text = layout_name(1) 
+
+    local function update_on_tag_selection(tag)
+        w.text = layout_name(tag.screen)
+    end
+
+    tag.attached_add_signal(screen, "property::selected", update_on_tag_selection)
+    tag.attached_add_signal(screen, "property::layout", update_on_tag_selection)
+    id(w)
+    return w
+end
+
+setmetatable(layoutinfo,
+{
+    __call = function(t, ...) return layoutinfo:new(...) end
+})
 
 layoutbox = {}
 function layoutbox:new(s, args)
@@ -191,6 +234,7 @@ function new(t, args)
     p.widgets = {
         taglist = taglist(s, args),
         prompt = prompt(s),
+        layoutinfo = layoutinfo(s),  
         layoutbox = (args.layouts and layoutbox(s, args)) or nil,
         clock = clock(s, args),
         systray = (s == 1 and systray(s, args)) or nil,
@@ -205,6 +249,7 @@ function new(t, args)
             layout = awful.widget.layout.horizontal.leftright
         },
         obvious.battery(),
+        p.widgets.layoutinfo,
         p.widgets.layoutbox,
         p.widgets.clock,
         p.widgets.systray,
@@ -217,6 +262,7 @@ function new(t, args)
     panels[s][#panels[s] + 1] = p
     return p
 end
+
 
 DEFAULT = {
     s = 1,
