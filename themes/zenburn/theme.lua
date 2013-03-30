@@ -27,9 +27,9 @@ theme.bg_urgent = theme.bg_normal
 -- }}}
 
 -- {{{ Borders
-theme.border_width  = 1
+theme.border_width  = 2
 -- theme.border_focus  = "#6F6F6F"
-theme.border_focus  = "#FF0000"
+theme.border_focus  = "#FFFF00"
 theme.border_normal = theme.bg_normal
 theme.border_marked = theme.fg_urgent
 -- }}}
@@ -62,6 +62,9 @@ theme.mouse_finder_color = theme.fg_urgent
 
 -- {{{ Taglist and Tasklist
 -- theme.[taglist|tasklist]_[bg|fg]_[focus|urgent]
+
+theme.taglist_bg_focus="#aa0000"
+theme.tasklist_bg_focus="#00aa00"
 -- }}}
 
 -- {{{ Menu
