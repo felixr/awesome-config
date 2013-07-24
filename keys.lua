@@ -1,6 +1,8 @@
 -- vim: ft=lua fdm=marker: 
+local naughty = require("naughty")
 local keydoc = require("keydoc")
 local capi = {
+    screen = screen,
     client = client
 }
 
@@ -15,6 +17,46 @@ local change_focus = function(dir)
                 awful.client.focus.bydirection(dir)
                 if client.focus then client.focus:raise() end
             end
+        end
+end
+
+local change_reltagidx = function(direction)
+        local t = awful.tag.selected()
+        local tagnum = awful.tag.getproperty(t, "position")
+
+        if not tagnum then
+            tagnum = (10 + direction) % 10
+        else
+            tagnum =  tagnum + direction
+        end
+
+        
+        local usedtags = {}
+        for i = 1, capi.screen.count() do
+            for j, t in ipairs(capi.screen[i]:tags()) do
+                if awful.tag.getproperty(t, "position") ~= nil then
+                    usedtags[awful.tag.getproperty(t, "position")] = t;
+                end
+            end
+        end
+        
+        while usedtags[tagnum] do
+            tagnum = tagnum + direction
+        end
+
+        -- naughty.notify( {text="new idx: " .. tagnum , timeout = 1})
+
+        if tagnum > 0 and tagnum < 10 then
+            local name = t.name
+   
+            if string.sub(name, 2, 2) == ":" then
+                name = string.sub(name, 3)
+            end
+            name = tagnum .. ":" .. name
+
+            awful.tag.setproperty(t, "position", tagnum)
+            t.name = name
+            t:emit_signal("property::name")
         end
 end
 
@@ -98,6 +140,10 @@ globalkeys = awful.util.table.join(
     awful.key({modkey, "Shift"}, "a", shifty.add, "Add"),
     awful.key({modkey,}, "Left", awful.tag.viewprev, "Prev tag"),
     awful.key({modkey,}, "Right", awful.tag.viewnext, "Next tag"),
+    awful.key({modkey,"Mod1"}, "Left", shifty.shift_prev, "Move tag left"),
+    awful.key({modkey,"Mod1"}, "Right", shifty.shift_next, "Move tag left"),
+    awful.key({modkey,"Mod1"}, "Down", function() change_reltagidx(-1) end),
+    awful.key({modkey,"Mod1"}, "Up", function() change_reltagidx(1) end),
     awful.key({modkey,}, "Escape", awful.tag.history.restore, "History restore"),
     -- }}}
 
@@ -178,16 +224,20 @@ globalkeys = awful.util.table.join(
 
 for i = 1, 9 do
     globalkeys = awful.util.table.join(globalkeys,
+        -- switch to tag number i
         awful.key({modkey}, i, function()
             awful.tag.viewonly(shifty.getpos(i))
         end),
 
+        -- select (also) tag number i
         awful.key({modkey, "Control"}, i, function()
             this_screen = awful.tag.selected().screen
             t = shifty.getpos(i, this_screen)
             t.selected = not t.selected
         end),
 
+
+        -- move to tag number i
         awful.key({modkey, "Shift"}, i, function()
             if client.focus then
                 local c = client.focus
