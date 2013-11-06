@@ -1,3 +1,6 @@
 [submodule "toolbox"]
 	path = toolbox
 	url = https://github.com/bioe007/awesome-toolbox.git
+[submodule "shifty"]
+	path = shifty
+	url = https://github.com/bioe007/awesome-shifty

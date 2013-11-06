@@ -66,62 +66,7 @@ shifty.config.tags = {
     },
 }
 
-shifty.config.apps = {
-    {
-        match          = {""},
-        float          = true,
-        honorsizehints = true,
-        buttons        = awful.util.table.join(
-            awful.button({}, 1, function(c) client.focus = c; c:raise() end),
-            awful.button({modkey}, 1, awful.mouse.client.move),
-            awful.button({modkey}, 3, awful.mouse.client.resize)),
-        slave          = true,
-    },
-    {
-        match = {".*IntelliJ IDEA.*"},
-        tag = "ide",
-        float = false
-    },
-    {
-        match = {"libreoffice.*"},
-        float = false,
-        tag   = "office",
-    },
-    {
-        match = {"remmina"},
-        float = false,
-        tag   = "rdp",
-    },
-    {
-        match = {"vim", "gvim"},
-        float = false,
-    },
-    {
-        match = {"Navigator", "Firefox"},
-        tag   = "web",
-        float = false,
-    },
-    {
-        match = {"Thunderbird"},
-        tag   = "mail",
-        float = false,
-    },
-    {
-        match = {"Evince"},
-        tag   = "ds",
-        float = false,
-    },
-    {
-        match          = {"urxvt", "gnome-terminal", "R"},
-        honorsizehints = false,
-        float          = false,
-    },
-    {
-        match = {"dialog", "%-applet", "MPlayer", "Sonata", "Thunar"},
-        intrusive = true,
-        float = true,
-    },
-}
+dofile(tb.path.join(dir.config, 'apps.lua'))
 
 shifty.config.defaults = {
     layout  = awful.layout.suit.tile,
