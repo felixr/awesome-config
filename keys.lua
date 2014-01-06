@@ -88,6 +88,11 @@ globalkeys = awful.util.table.join(
     awful.key({modkey,}, "u", awful.client.urgent.jumpto),
     awful.key({modkey,}, "Tab",
         function()
+            awful.client.focus.byidx(1)
+            client.focus:raise()
+        end, "Next client"),
+    awful.key({modkey, }, "<",
+        function()
             awful.client.focus.history.previous()
             if client.focus then
                 client.focus:raise()
@@ -210,7 +215,7 @@ globalkeys = awful.util.table.join(
     -- Applications
     keydoc.group("Apps"), -- {{{
     awful.key({modkey, }, "Return", terminal, "Terminal"),
-    awful.key({modkey, }, "e", editor, "Editor"),
+    awful.key({modkey, }, "e", edtor, "Editor"),
     awful.key({modkey, }, "f", filemgr, "File mgr"),
     awful.key({modkey, }, "XF86Calculator", function() awful.util.spawn("i3lock -c 000000 -d") end, "Lock screen"),
     -- }}}

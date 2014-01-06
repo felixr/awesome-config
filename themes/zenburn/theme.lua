@@ -15,7 +15,7 @@ theme.confdir       = awful.util.getdir("config") .. "/themes/zenburn"
 
 
 -- {{{ Styles
-theme.font      = "Envy Code R 9"
+theme.font      = "Envy Code R 12"
 
 -- {{{ Colors
 theme.fg_normal = "#DCDCCC"
@@ -64,7 +64,10 @@ theme.mouse_finder_color = theme.fg_urgent
 -- theme.[taglist|tasklist]_[bg|fg]_[focus|urgent]
 
 theme.taglist_bg_focus="#aa0000"
-theme.tasklist_bg_focus="#00aa00"
+
+theme.tasklist_bg="#002c47"
+theme.tasklist_fg_focus="#000000"
+theme.tasklist_bg_focus="#00CEFF"
 -- }}}
 
 -- {{{ Menu

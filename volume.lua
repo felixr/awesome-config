@@ -19,7 +19,7 @@ local sexy    = require('sexy')
 module('volume')
 
 cmd = '/usr/bin/amixer'
-card = 0
+card = '1'
 
 local quiet = '-q'
 
@@ -52,8 +52,6 @@ function change(value, card, channel)
 
     s = table.concat({
                       cmd,
-                      '-c',
-                      (card or '0'),
                       'sset ',
                       (channel or 'Master'),
                       s_val},
