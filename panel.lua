@@ -14,11 +14,16 @@ local tag = require('awful.tag')
 local capi = {
     client = client,
     mouse = mouse,
-    widget = widget
+    widget = widget,
+    image = image,
+    -- timer = timer
 }
+local beautiful = require('beautiful')
 
 local obvious = require("obvious")
 local menu = require('menu')
+
+local battery2 = require('battery2')
 
 module('panel')
 
@@ -39,7 +44,7 @@ setmetatable(id,
 clock = {}
 function clock:new(s, args)
     local args = args or {}
-    ck = awful.widget.textclock({align = args.align or 'right'})
+    ck = awful.widget.textclock({align = args.align or 'right'}, " 🕒 %H:%M")
     id(ck)
     return ck
 end
@@ -126,7 +131,11 @@ function taglist:new(s, args)
     )
     buttons = args.buttons or buttons
     local tl = awful.widget.taglist(s,
-                                    awful.widget.taglist.label.all,
+    function (t, args)
+        if not args then args = {} end
+        args.bg_occupied = "#000000"
+        return awful.widget.taglist.label.all(t, args)
+    end,
                                     buttons)
     taglist[s] = tl
     id(tl)
@@ -201,7 +210,19 @@ function tasklist:new(s, args)
                                   end))
 
     local labeler = function(c)
-        return awful.widget.tasklist.label.currenttags(c, s)
+        local text, bg, image, icon = awful.widget.tasklist.label.currenttags(c, s)
+        if not text then return end
+        -- text = "<span style='border: 1px solid white'>" .. c.name .. "</span>"
+        if capi.client.focus ~= c then
+            bg = beautiful.tasklist_bg
+        end
+        local ico
+        if not c.icon then
+            ico = capi.image(beautiful.widget_cpu)
+        else
+                ico = c.icon
+        end
+        return text, bg, image, ico
     end
     local tl = awful.widget.tasklist(labeler, buttons)
     id(tl)
@@ -241,17 +262,18 @@ function new(t, args)
         tasklist = tasklist(s, args)
     }
 
-    p.wb = awful.wibox({position = args.position, screen = s, height=16})
+    p.wb = awful.wibox({position = args.position, screen = s, height=20})
+
     p.wb.widgets = {
         {
             p.widgets.taglist,
             p.widgets.prompt,
             layout = awful.widget.layout.horizontal.leftright
         },
-        obvious.battery(),
+        p.widgets.clock,
+        battery2(),
         p.widgets.layoutinfo,
         p.widgets.layoutbox,
-        p.widgets.clock,
         p.widgets.systray,
         p.widgets.tasklist,
         layout = awful.widget.layout.horizontal.rightleft

@@ -93,6 +93,11 @@ globalkeys = awful.util.table.join(
     awful.key({modkey,}, "u", awful.client.urgent.jumpto),
     awful.key({modkey,}, "Tab",
         function()
+            awful.client.focus.byidx(1)
+            client.focus:raise()
+        end, "Next client"),
+    awful.key({modkey, }, "<",
+        function()
             awful.client.focus.history.previous()
             if client.focus then
                 client.focus:raise()

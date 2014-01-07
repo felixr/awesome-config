@@ -3,13 +3,7 @@ require("awful.autofocus")
 require("beautiful")
 require("naughty")
 
--- custom modules
-require("revelation")
-require("shifty")
-require("panel")
-require("volume")
 tb = require('toolbox')
-
 dir = {}
 dir.config = awful.util.getdir('config')
 dir.cache = awful.util.getdir('cache')
@@ -17,6 +11,15 @@ dir.theme = tb.path.join(dir.config, "/themes/zenburn")
 
 beautiful.init(dir.theme .. "/theme.lua")
 beautiful.iconpath = dir.theme
+
+-- custom modules
+require("revelation")
+require("shifty")
+require("panel")
+require("volume")
+
+
+
 
 browser  = tb.client.create_launcher("firefox", true)
 editor   = tb.client.create_launcher("gvim", true)

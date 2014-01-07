@@ -4,7 +4,7 @@ reload_rules = function()
     local shifty = require('shifty')
 
     for k,v in ipairs(client.get()) do
-        local status, err = pcall(shifty.match, v,true) 
+        local status, err = pcall(shifty.match, v,true)
         if not status then
             return err
         end
@@ -49,7 +49,7 @@ shifty.config.apps = {
         tag   = "rdp",
     },
     {
-        match = {"vim", "gvim", "Oracle SQL Developer"},
+        match = {"vim", "gvim", "Oracle SQL Developer", "emacs"},
         float = false,
     },
     {
