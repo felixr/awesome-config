@@ -25,7 +25,8 @@ shifty.config.apps = {
             awful.button({modkey}, 3, awful.mouse.client.resize)),
         slave          = true,
         callback = function(c)
-            if c.skip_taskbar and c.icon == nil then
+            -- if c.skip_taskbar and c.icon == nil then
+            if c.skip_taskbar then
                 c.border_width = 0
             end
         end
@@ -43,12 +44,12 @@ shifty.config.apps = {
         tag   = "office",
     },
     {
-        match = {"remmina"},
+        match = {"remmina", "rdesktop"},
         float = false,
         tag   = "rdp",
     },
     {
-        match = {"vim", "gvim"},
+        match = {"vim", "gvim", "Oracle SQL Developer"},
         float = false,
     },
     {

@@ -6,13 +6,18 @@ local capi = {
     client = client
 }
 
+-- local hints = require("hints")
+-- hints.init()
+
+
 
 local change_focus = function(dir) 
     return function()
             local curlayout = awful.layout.get(mouse.screen);
             if  awful.layout.getname(curlayout) == "max" then
                 awful.client.focus.byidx(1)
-                client.focus:raise()
+                local c = client.focus
+                c:raise()
             else
                 awful.client.focus.bydirection(dir)
                 if client.focus then client.focus:raise() end
@@ -149,6 +154,7 @@ globalkeys = awful.util.table.join(
 
     -- Revelation
     keydoc.group("Misc"), ---{{{
+    -- awful.key({modkey}, "u", function () hints.focus() end, "Show hints"),
     awful.key({modkey}, "e", revelation, "Show all windows"), -- all clients
     awful.key({modkey, "Shift"},          -- only terminals
               "e",
@@ -175,18 +181,18 @@ globalkeys = awful.util.table.join(
                 if command == "" then return end
 
                 -- Check throught the clients if the class match the command
-                local lower_command=string.lower(command)
-                for k, c in pairs(client.get()) do
-                    local class=string.lower(c.class)
-                    if string.match(class, lower_command) then
-                        for i, v in ipairs(c:tags()) do
-                            awful.tag.viewonly(v)
-                            c:raise()
-                            c.minimized = false
-                            return
-                        end
-                    end
-                end
+                -- local lower_command=string.lower(command)
+                -- for k, c in pairs(client.get()) do
+                --     local class=string.lower(c.class)
+                --     if string.match(class, lower_command) then
+                --         for i, v in ipairs(c:tags()) do
+                --             awful.tag.viewonly(v)
+                --             c:raise()
+                --             c.minimized = false
+                --             return
+                --         end
+                --     end
+                -- end
                 awful.util.spawn(command)
             end),
      -- awful.key({ modkey }, "z",
@@ -210,7 +216,7 @@ globalkeys = awful.util.table.join(
     -- Applications
     keydoc.group("Apps"), -- {{{
     awful.key({modkey, }, "Return", terminal, "Terminal"),
-    awful.key({modkey, }, "e", editor, "Editor"),
+    -- awful.key({modkey, }, "e", editor, "Editor"),
     awful.key({modkey, }, "f", filemgr, "File mgr"),
     awful.key({modkey, }, "XF86Calculator", function() awful.util.spawn("i3lock -c 000000 -d") end, "Lock screen"),
     -- }}}
