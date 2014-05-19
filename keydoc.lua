@@ -45,6 +45,8 @@ local function key2str(key)
    local sym = key.key or key.keysym
    local translate = {
       ["#14"] = "#",
+      ["<"] = "&lt;",
+      [">"] = "&gt;",
       [" "] = "Space",
    }
    sym = translate[sym] or sym
