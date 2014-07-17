@@ -55,7 +55,7 @@ setmetatable(clock,
 
 layoutinfo = {}
 function layoutinfo:new(s, args)
-    local screen = screen or 1
+    local screen = s or 1
     local args = args or {}
     args.type = "textbox"
     local w = capi.widget(args)
@@ -73,6 +73,7 @@ function layoutinfo:new(s, args)
         pretty_names.fullscreen = "[Full]"
         pretty_names.magnifier  = "[Magn]"
         pretty_names.floating   = "[flt*]" 
+        pretty_names.mylayout   = "[*my*]" 
 
         local l = awful.layout.getname(awful.layout.get(scr))
         return pretty_names[l] or l

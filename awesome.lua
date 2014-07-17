@@ -17,6 +17,7 @@ require("revelation")
 require("shifty")
 require("panel")
 require("volume")
+mylayout = require("mylayout")
 
 
 
@@ -38,35 +39,38 @@ shifty.config.layouts = {
     awful.layout.suit.max,
     awful.layout.suit.fair,
     awful.layout.suit.floating,
+    mylayout,
 }
 
 -- Shifty configuration
 shifty.config.tags = {
-    web = {
-        exclusive   = true,
-        max_clients = 1,
-        position    = 1,
-        layout = awful.layout.suit.tile,
-    },
-    mail = {
-        exclusive   = true,
-        position = 2,
-    },
-    ide = {
-        layout = awful.layout.suit.max,
-        position = 7
-    },
-    ds = {
-        layout   = awful.layout.suit.max,
-        position = 8,
-        slave    = false,
-    },
-    rdp = {
-        layout   = awful.layout.suit.max,
-        position = 9,
-        slave    = false,
-        exclusive= true
-    },
+    -- web = {
+    --     -- exclusive   = true,
+    --     -- max_clients = 1,
+    --     position    = 1,
+    --     layout = awful.layout.suit.tile,
+    --     screen = 2,
+    -- },
+    -- gapps = {
+    --     position = 2,
+    --     screen = 2,
+    --     -- exclusive   = true,
+    -- },
+    -- ide = {
+    --     layout = awful.layout.suit.max,
+    --     position = 7
+    -- },
+    -- ds = {
+    --     layout   = awful.layout.suit.max,
+    --     position = 8,
+    --     slave    = false,
+    -- },
+    -- rdp = {
+    --     layout   = awful.layout.suit.max,
+    --     position = 9,
+    --     slave    = false,
+    --     exclusive= true
+    -- },
 }
 
 dofile(tb.path.join(dir.config, 'apps.lua'))
@@ -79,7 +83,7 @@ shifty.config.defaults = {
 
 -- sloppy focus ?
 shifty.config.sloppy = false
--- Add titlebars to all clients when the float? 
+-- Add titlebars to all clients when the float?
 shifty.config.float_bars = true
 shifty.modkey = modkey
 
@@ -100,11 +104,11 @@ shifty.config.clientkeys = awful.util.table.join(
     --                 c:kill()
     --             end
     -- end),
-    keydoc.group("Window props"), 
+    keydoc.group("Window props"),
             awful.key({modkey, "Control"}, "space", awful.client.floating.toggle, "Toggle floating"),
     awful.key({modkey, "Control"}, "Return",
               function(c) c:swap(awful.client.getmaster()) end, "Make master"),
-    -- awful.key({modkey, "Shift"}, "s", awful.client.movetoscreen),
+    awful.key({modkey, "Shift"}, "s", awful.client.movetoscreen),
     awful.key({modkey, "Shift"}, "r", function(c) c:redraw() end, "Redraw"),
     awful.key({modkey,}, "t", function(c) c.ontop = not c.ontop end, "Toggle on-top"),
     awful.key({modkey,}, "n",
@@ -135,6 +139,17 @@ shifty.taglist = panel.taglist
 shifty.init()
 
 client.add_signal("focus",
-                  function(c) c.border_color = beautiful.border_focus end)
+                  function(c)
+                      c.border_color = beautiful.border_focus
+                      c.opacity = 1.0
+                  end)
+
 client.add_signal("unfocus",
-                  function(c) c.border_color = beautiful.border_normal end)
+                  function(c)
+                      c.border_color = beautiful.border_normal
+                      if c.class:find("chrome") or c.class:find("jetbrains") or c.class:find("sun-awt") then
+                          c.opacity = 1.0
+                      else
+                          c.opacity = 0.9
+                      end
+                  end)

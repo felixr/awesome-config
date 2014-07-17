@@ -53,20 +53,20 @@ shifty.config.apps = {
         float = false,
     },
     {
-        match = {"Navigator", "Firefox"},
+        match = {"Navigator", "Firefox", "chrome"},
         tag   = "web",
         float = false,
     },
     {
-        match = {"Thunderbird"},
-        tag   = "mail",
+        match = {"crx_nckgahadagoaajjgafhacjanaoiihapd"},
+        tag   = "hangouts",
         float = false,
     },
-    {
-        match = {"Evince"},
-        tag   = "ds",
-        float = false,
-    },
+    -- {
+    --     match = {"Evince"},
+    --     tag   = "ds",
+    --     float = false,
+    -- },
     -- {
     --     match          = {"R"},
     --     honorsizehints = true,
@@ -75,7 +75,6 @@ shifty.config.apps = {
     -- },
     {
         match          = { "%-terminal", "urxvt", "R_x11"},
-        honorsizehints = false,
         float          = false,
         ontop          = false
     },
