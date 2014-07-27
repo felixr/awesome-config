@@ -6,10 +6,8 @@ local capi = {
     client = client
 }
 
--- local hints = require("hints")
--- hints.init()
-
-
+local hints = require('hints')
+hints.init()
 
 local change_focus = function(dir) 
     return function()
@@ -161,6 +159,7 @@ globalkeys = awful.util.table.join(
     keydoc.group("Misc"), ---{{{
     -- awful.key({modkey}, "u", function () hints.focus() end, "Show hints"),
     awful.key({modkey}, "e", revelation, "Show all windows"), -- all clients
+    awful.key({modkey}, "j", hints.focus , "hinting"), -- all clients
     awful.key({modkey, "Shift"},          -- only terminals
               "e",
               function() revelation({class=client.focus.class}) end, "Show same class "
