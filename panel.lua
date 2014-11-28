@@ -61,7 +61,7 @@ function layoutinfo:new(s, args)
     local w = capi.widget(args)
     local function layout_name(scr)
         local pretty_names = {}
-        pretty_names.tile       = "[tile]" 
+        pretty_names.tile       = "[tile]"
         pretty_names.tileleft   = "[l-tl]"
         pretty_names.tilebottom = "[b-tl]"
         pretty_names.tiletop    = "[t-tl]"
@@ -72,8 +72,10 @@ function layoutinfo:new(s, args)
         pretty_names.max        = "[maxx]"
         pretty_names.fullscreen = "[Full]"
         pretty_names.magnifier  = "[Magn]"
-        pretty_names.floating   = "[flt*]" 
-        pretty_names.mylayout   = "[*my*]" 
+        pretty_names.floating   = "[flt*]"
+        pretty_names.mylayout   = "[*my*]"
+        pretty_names.cascadebrowse = "[cscb]"
+        pretty_names.centerwork = "[cntr]"
 
         local l = awful.layout.getname(awful.layout.get(scr))
         return pretty_names[l] or l
