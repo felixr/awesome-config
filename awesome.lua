@@ -72,6 +72,17 @@ shifty.config.tags = {
     --     exclusive= true
     -- },
 }
+shifty.config.tags['1:web'] = {
+        position    = 1,
+        layout = awful.layout.suit.tile,
+        screen = 2,
+}
+
+shifty.config.tags['9:hangouts'] = {
+        position    = 9,
+        layout = awful.layout.suit.vair,
+        screen = 1,
+}
 
 dofile(tb.path.join(dir.config, 'apps.lua'))
 

@@ -54,12 +54,12 @@ shifty.config.apps = {
     },
     {
         match = {"Navigator", "Firefox", "chrome"},
-        tag   = "web",
+        tag   = "1:web",
         float = false,
     },
     {
         match = {"crx_nckgahadagoaajjgafhacjanaoiihapd"},
-        tag   = "hangouts",
+        tag   = "9:hangouts",
         float = false,
     },
     -- {
@@ -88,5 +88,9 @@ shifty.config.apps = {
         float = true,
         ontop = true,
         intrusive = true
+    },
+    {
+	match = {"Developer Tool.*"},
+	tag = "web-dev"
     },
 }
