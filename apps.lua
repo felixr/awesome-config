@@ -1,5 +1,5 @@
 reload_rules = function()
-    dofile('/home/rdl/.config/awesome/apps.lua')
+    dofile(os.getenv('HOME') .. '/.config/awesome/apps.lua')
     local serpent = require('serpent')
     local shifty = require('shifty')
 
