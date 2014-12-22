@@ -203,11 +203,7 @@ globalkeys = awful.util.table.join(
     awful.key({modkey}, "Up", function (c) awful.util.spawn("transset --actual --inc 0.1") end),
     awful.key({modkey}, "Down", function (c) awful.util.spawn("transset --actual --dec 0.1") end),
     awful.key({modkey}, "e", revelation, "Show all windows"), -- all clients
-<<<<<<< HEAD
-    awful.key({modkey}, "j", hints.focus , "hinting"), -- all clients
-=======
     awful.key({modkey}, "j", hints.focus, "Show window hints"),
->>>>>>> daee2a452e2deb93759cfe32dd2563e9cdc83bed
     awful.key({modkey, "Shift"},          -- only terminals
               "e",
               function() revelation({class=client.focus.class}) end, "Show same class "
