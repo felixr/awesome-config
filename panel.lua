@@ -44,7 +44,26 @@ setmetatable(id,
 clock = {}
 function clock:new(s, args)
     local args = args or {}
-    ck = awful.widget.textclock({align = args.align or 'right'}, " 🕒 %H:%M")
+    ck = awful.widget.textclock({align = args.align or 'right'}, " 🕒 %d %b %H:%M")
+    -- utc_offset = function(tz)
+	    -- local f = io.popen('LANG=C TZ='..tz..' date +"%z"')
+	    -- local l = f:read("*a")
+	    -- f:close()
+	    -- return trim(l)
+    -- end, --utc_offset
+
+    tooltip = awful.tooltip({
+	    objects = { ck },
+	    timer_function = function()
+		    local now = os.time()
+		    local utcdate = os.date("!*t", now)
+		    local mtv_t = os.time(utcdate) - (8*3600)
+		    local ny_t = os.time(utcdate) - (5*3600)
+		    local timez = os.date("MTV (PDT): %d %b %Y, %I:%M%P\n", mtv_t)
+		    .. os.date("New York (EST): %d %b %Y, %I:%M%P\n", ny_t)
+		    return timez
+	    end,
+    })
     id(ck)
     return ck
 end
@@ -55,13 +74,13 @@ setmetatable(clock,
 
 layoutinfo = {}
 function layoutinfo:new(s, args)
-    local screen = screen or 1
+    local screen = s or 1
     local args = args or {}
     args.type = "textbox"
     local w = capi.widget(args)
     local function layout_name(scr)
         local pretty_names = {}
-        pretty_names.tile       = "[tile]" 
+        pretty_names.tile       = "[tile]"
         pretty_names.tileleft   = "[l-tl]"
         pretty_names.tilebottom = "[b-tl]"
         pretty_names.tiletop    = "[t-tl]"
@@ -72,7 +91,11 @@ function layoutinfo:new(s, args)
         pretty_names.max        = "[maxx]"
         pretty_names.fullscreen = "[Full]"
         pretty_names.magnifier  = "[Magn]"
-        pretty_names.floating   = "[flt*]" 
+        pretty_names.floating   = "[flt*]"
+        pretty_names.mylayout   = "[*my*]"
+        pretty_names.cascadebrowse = "[cscb]"
+        pretty_names.centerwork = "[cntr]"
+        pretty_names.termfair = "[term]"
 
         local l = awful.layout.getname(awful.layout.get(scr))
         return pretty_names[l] or l
@@ -271,7 +294,7 @@ function new(t, args)
             layout = awful.widget.layout.horizontal.leftright
         },
         p.widgets.clock,
-        battery2(),
+        -- battery2(),
         p.widgets.layoutinfo,
         p.widgets.layoutbox,
         p.widgets.systray,

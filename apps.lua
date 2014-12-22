@@ -1,5 +1,5 @@
 reload_rules = function()
-    dofile('/home/rdl/.config/awesome/apps.lua')
+    dofile(os.getenv('HOME') .. '/.config/awesome/apps.lua')
     local serpent = require('serpent')
     local shifty = require('shifty')
 
@@ -53,20 +53,25 @@ shifty.config.apps = {
         float = false,
     },
     {
-        match = {"Navigator", "Firefox"},
-        tag   = "web",
+        match = {"Navigator", "Firefox", "chrome"},
+        tag   = "1:web",
         float = false,
     },
     {
-        match = {"Thunderbird"},
-        tag   = "mail",
+        match = {"crx_nckgahadagoaajjgafhacjanaoiihapd"},
+        tag   = "9:hangouts",
         float = false,
+        callback = function(c)
+		c.opacity = 0.5
+		awful.titlebar.add(c, { modkey = modkey })
+		awful.client.property.set(c, "sticky_titlebar", true)
+	end
     },
-    {
-        match = {"Evince"},
-        tag   = "ds",
-        float = false,
-    },
+    -- {
+    --     match = {"Evince"},
+    --     tag   = "ds",
+    --     float = false,
+    -- },
     -- {
     --     match          = {"R"},
     --     honorsizehints = true,
@@ -75,7 +80,6 @@ shifty.config.apps = {
     -- },
     {
         match          = { "%-terminal", "urxvt", "R_x11"},
-        honorsizehints = false,
         float          = false,
         ontop          = false
     },
@@ -89,5 +93,9 @@ shifty.config.apps = {
         float = true,
         ontop = true,
         intrusive = true
+    },
+    {
+	match = {"Developer Tool.*"},
+	tag = "web-dev"
     },
 }

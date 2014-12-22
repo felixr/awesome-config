@@ -9,6 +9,7 @@ require("naughty")
 keydoc = require("keydoc")
 
 stacktrace = ""
+awful.util.spawn_with_shell("xrdb -merge $HOME/.Xresources")
 
 confdir = awful.util.getdir("config")
 local rc, err = loadfile(confdir .. "/awesome.lua");

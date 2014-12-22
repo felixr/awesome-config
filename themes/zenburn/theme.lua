@@ -29,7 +29,8 @@ theme.bg_urgent = theme.bg_normal
 -- {{{ Borders
 theme.border_width  = 2
 -- theme.border_focus  = "#6F6F6F"
-theme.border_focus  = "#FFFF00"
+-- theme.border_focus  = "#FFFF00"
+theme.border_focus  = "#FF0000"
 theme.border_normal = theme.bg_normal
 theme.border_marked = theme.fg_urgent
 -- }}}
@@ -104,6 +105,14 @@ theme.layout_max        = theme.confdir .. "/icons/layouts/max.png"
 theme.layout_fullscreen = theme.confdir .. "/icons/layouts/fullscreen.png"
 theme.layout_magnifier  = theme.confdir .. "/icons/layouts/magnifier.png"
 theme.layout_floating   = theme.confdir .. "/icons/layouts/floating.png"
+
+theme.layout_termfair      = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/termfairw.png"
+theme.layout_browse        = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/browsew.png"
+theme.layout_gimp          = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/gimpw.png"
+theme.layout_cascade       = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/cascadew.png"
+theme.layout_cascadebrowse = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/cascadebrowsew.png"
+theme.layout_centerwork    = os.getenv("HOME") .. "/.config/awesome/vain/themes/default/layouts/centerworkw.png"
+
 -- }}}
 
 -- {{{ Widget icons

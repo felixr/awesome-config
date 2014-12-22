@@ -1,4 +1,4 @@
--- vim: ft=lua fdm=marker: 
+-- vim: ft=lua fdm=marker:
 local naughty = require("naughty")
 local keydoc = require("keydoc")
 local capi = {
@@ -9,7 +9,8 @@ local capi = {
 local hints = require('hints')
 hints.init()
 
-local change_focus = function(dir) 
+
+local change_focus = function(dir)
     return function()
             local curlayout = awful.layout.get(mouse.screen);
             if  awful.layout.getname(curlayout) == "max" then
@@ -33,7 +34,7 @@ local change_reltagidx = function(direction)
             tagnum =  tagnum + direction
         end
 
-        
+
         local usedtags = {}
         for i = 1, capi.screen.count() do
             for j, t in ipairs(capi.screen[i]:tags()) do
@@ -42,7 +43,7 @@ local change_reltagidx = function(direction)
                 end
             end
         end
-        
+
         while usedtags[tagnum] do
             tagnum = tagnum + direction
         end
@@ -51,7 +52,7 @@ local change_reltagidx = function(direction)
 
         if tagnum > 0 and tagnum < 10 then
             local name = t.name
-   
+
             if string.sub(name, 2, 2) == ":" then
                 name = string.sub(name, 3)
             end
@@ -69,25 +70,67 @@ globalkeys = awful.util.table.join(
 
     awful.key({modkey,}, "h", change_focus("left"), "Focus left"),
     awful.key({modkey,}, "l", change_focus("right"), "Focus right"),
-    awful.key({modkey,}, "j", change_focus("down"), "Focus down"), 
-    awful.key({modkey,}, "k", change_focus("up"), "Focus up"), 
-        
+    awful.key({modkey,}, "j", change_focus("down"), "Focus down"),
+    awful.key({modkey,}, "k", change_focus("up"), "Focus up"),
+
     -- Layout manipulation
-    awful.key({modkey, "Shift"}, "j",
-              function() awful.client.swap.bydirection("down") end, "Swap down"),
-    awful.key({modkey, "Shift"}, "k",
-              function() awful.client.swap.bydirection("up") end, "Swap up"),
-    awful.key({modkey, "Shift"}, "h",
-              function() awful.client.swap.bydirection("left") end, "Swap left"),
-    awful.key({modkey, "Shift"}, "l",
-              function() awful.client.swap.bydirection("right") end, "Swap right"),
+    -- awful.key({modkey, "Shift"}, "j", function() awful.client.swap.bydirection("down") end, "Swap down"),
+    -- awful.key({modkey, "Shift"}, "k", function() awful.client.swap.bydirection("up") end, "Swap up"),
+    -- awful.key({modkey, "Shift"}, "h", function() awful.client.swap.bydirection("left") end, "Swap left"),
+    -- awful.key({modkey, "Shift"}, "l", function() awful.client.swap.bydirection("right") end, "Swap right"),
 
     awful.key({modkey}, "s",
               function()
                   awful.screen.focus_relative(1)
+
                   local mc = mouse.coords()
                   mouse.coords({x=mc.x + 40, y=mc.y + 40}, true)
               end),
+   awful.key({ modkey, "Shift" }, "o",
+              function ()
+                local scr = mouse.screen
+
+                local t = awful.tag.selected(scr)
+                local name = t.name
+                local nt = shifty.add({
+                    name = name,
+                    screen = (scr % 2) + 1,
+                    layout = awful.layout.get(scr)
+                })
+
+
+
+               local clients = awful.client.visible(scr)
+               for i = 1, table.getn(clients) do
+                   awful.client.movetotag(nt, clients[i])
+               end
+
+               shifty.del(t)
+
+               awful.screen.focus_relative(1)
+               local mc = mouse.coords()
+               mouse.coords({x=mc.x + 100, y=mc.y + 100}, true)
+
+               -- tag1 = awful.tag.selected(1)
+               -- tag2 = awful.tag.selected(2)
+
+               -- visibleScreen1 = awful.client.visible(1)
+               -- visibleScreen2 = awful.client.visible(2)
+
+
+               -- awful.client.movetotag(tag1, visibleScreen2[1])
+               -- awful.client.movetotag(tag2, visibleScreen1[1])
+
+               -- for i = 2, table.getn(visibleScreen1) do
+               --     -- awful.client.movetoscreen(visibleScreen1[i], 2)
+               --     awful.client.movetotag(tag2, visibleScreen1[i])
+               -- end
+
+               -- for i = 2, table.getn(visibleScreen2) do
+               --     awful.client.movetotag(tag1, visibleScreen2[i])
+               --     -- awful.client.movetoscreen(visibleScreen2[i], 1)
+               -- end
+              end, "Screen switch"),
     awful.key({modkey,}, "u", awful.client.urgent.jumpto),
     awful.key({modkey,}, "Tab",
         function()
@@ -104,18 +147,16 @@ globalkeys = awful.util.table.join(
     ---}}}
 
     keydoc.group("Awesome"), -- {{{
-    awful.key({modkey, "Control"}, "r", awesome.restart, "Restart"),
+    awful.key({modkey, "Mod1", "Control"}, "r", awesome.restart, "Restart"),
     awful.key({modkey, "Shift"}, "q", awesome.quit, "Quit"),
     -- }}}
 
     keydoc.group("Layout"), -- {{{
-    awful.key({modkey,}, "=", function() awful.tag.setmwfact(0.5) end, "Master 50/50"),
+    awful.key({modkey,}, "=", function() awful.tag.setmwfact(0.5) end, "Master 50-50"),
     -- awful.key({modkey,}, "l", function() awful.tag.incmwfact(0.05) end, "Master  size+"),
     -- awful.key({modkey,}, "h", function() awful.tag.incmwfact(-0.05) end, "Master size-"),
-    -- awful.key({modkey, "Shift"}, "h",
-    --           function() awful.tag.incnmaster(1) end, "Master num+"),
-    -- awful.key({modkey, "Shift"}, "l",
-    --           function() awful.tag.incnmaster(-1) end, "Master num-"),
+    awful.key({modkey, "Shift"}, "h", function() awful.tag.incnmaster(1) end, "Master num+"),
+    awful.key({modkey, "Shift"}, "l", function() awful.tag.incnmaster(-1) end, "Master num-"),
     awful.key({modkey, "Control"}, "h", function() awful.tag.incncol(1) end, "Column +"),
     awful.key({modkey, "Control"}, "l", function() awful.tag.incncol(-1) end, "Column -"),
     awful.key({modkey}, "space",
@@ -125,7 +166,7 @@ globalkeys = awful.util.table.join(
 
     awful.key({modkey, "Shift"}, "n", shifty.send_prev, "Send to prev"),
     awful.key({modkey}, "n", shifty.send_next, "Send to next"),
-    awful.key({modkey, "Mod1"}, "n", function() 
+    awful.key({modkey, "Mod1"}, "n", function()
         local c = capi.client.focus
         local t = shifty.add()
         awful.client.movetotag(t, c)
@@ -139,9 +180,9 @@ globalkeys = awful.util.table.join(
     --               t = shifty.tagtoscr(s, t)
     --               awful.tag.viewonly(t)
     --           end),
-    
+
     -- }}}
-    
+
     keydoc.group("Tag"), -- {{{
     awful.key({modkey, "Shift"}, "r", shifty.rename, "Rename"),
     awful.key({modkey}, "d", shifty.del, "Delete"),
@@ -158,8 +199,15 @@ globalkeys = awful.util.table.join(
     -- Revelation
     keydoc.group("Misc"), ---{{{
     -- awful.key({modkey}, "u", function () hints.focus() end, "Show hints"),
+
+    awful.key({modkey}, "Up", function (c) awful.util.spawn("transset --actual --inc 0.1") end),
+    awful.key({modkey}, "Down", function (c) awful.util.spawn("transset --actual --dec 0.1") end),
     awful.key({modkey}, "e", revelation, "Show all windows"), -- all clients
+<<<<<<< HEAD
     awful.key({modkey}, "j", hints.focus , "hinting"), -- all clients
+=======
+    awful.key({modkey}, "j", hints.focus, "Show window hints"),
+>>>>>>> daee2a452e2deb93759cfe32dd2563e9cdc83bed
     awful.key({modkey, "Shift"},          -- only terminals
               "e",
               function() revelation({class=client.focus.class}) end, "Show same class "
@@ -179,7 +227,7 @@ globalkeys = awful.util.table.join(
      -- Run or raise applications with dmenu
      awful.key({ modkey }, "r",
             function ()
-                local f_reader = io.popen( "dmenu_path | dmenu -b -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
+                local f_reader = io.popen( "cat $HOME/.dmenu_cache | dmenu -b -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
                 local command = assert(f_reader:read('*a'))
                 f_reader:close()
                 if command == "" then return end
@@ -223,8 +271,10 @@ globalkeys = awful.util.table.join(
     -- awful.key({modkey, }, "e", editor, "Editor"),
     awful.key({modkey, }, "f", filemgr, "File mgr"),
     awful.key({modkey, }, "XF86Calculator", function() awful.util.spawn("i3lock -c 000000 -d") end, "Lock screen"),
+    -- awful.key({modkey, }, "F11", function() awful.util.spawn("gnome-screensaver-command --lock") end, "Lock screen"),
+    awful.key({modkey, }, "F12", function() awful.util.spawn_with_shell("~/opt/bin/xlock") end, "Lock screen"),
     -- }}}
-    
+
     keydoc.group("Volume"), -- {{{
     awful.key({modkey}, "XF86Back", function() volume(-5) end, "Volume -5"),
     awful.key({}, "XF86AudioLowerVolume", volume.lower, "Volume -1"),
