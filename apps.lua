@@ -61,6 +61,11 @@ shifty.config.apps = {
         match = {"crx_nckgahadagoaajjgafhacjanaoiihapd"},
         tag   = "9:hangouts",
         float = false,
+        callback = function(c)
+		c.opacity = 0.5
+		awful.titlebar.add(c, { modkey = modkey })
+		awful.client.property.set(c, "sticky_titlebar", true)
+	end
     },
     -- {
     --     match = {"Evince"},

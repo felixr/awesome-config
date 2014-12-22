@@ -75,14 +75,10 @@ globalkeys = awful.util.table.join(
     awful.key({modkey,}, "k", change_focus("up"), "Focus up"),
 
     -- Layout manipulation
-    awful.key({modkey, "Shift"}, "j",
-              function() awful.client.swap.bydirection("down") end, "Swap down"),
-    awful.key({modkey, "Shift"}, "k",
-              function() awful.client.swap.bydirection("up") end, "Swap up"),
-    awful.key({modkey, "Shift"}, "h",
-              function() awful.client.swap.bydirection("left") end, "Swap left"),
-    awful.key({modkey, "Shift"}, "l",
-              function() awful.client.swap.bydirection("right") end, "Swap right"),
+    -- awful.key({modkey, "Shift"}, "j", function() awful.client.swap.bydirection("down") end, "Swap down"),
+    -- awful.key({modkey, "Shift"}, "k", function() awful.client.swap.bydirection("up") end, "Swap up"),
+    -- awful.key({modkey, "Shift"}, "h", function() awful.client.swap.bydirection("left") end, "Swap left"),
+    -- awful.key({modkey, "Shift"}, "l", function() awful.client.swap.bydirection("right") end, "Swap right"),
 
     awful.key({modkey}, "s",
               function()
@@ -160,10 +156,8 @@ globalkeys = awful.util.table.join(
     awful.key({modkey,}, "=", function() awful.tag.setmwfact(0.5) end, "Master 50-50"),
     -- awful.key({modkey,}, "l", function() awful.tag.incmwfact(0.05) end, "Master  size+"),
     -- awful.key({modkey,}, "h", function() awful.tag.incmwfact(-0.05) end, "Master size-"),
-    -- awful.key({modkey, "Shift"}, "h",
-    --           function() awful.tag.incnmaster(1) end, "Master num+"),
-    -- awful.key({modkey, "Shift"}, "l",
-    --           function() awful.tag.incnmaster(-1) end, "Master num-"),
+    awful.key({modkey, "Shift"}, "h", function() awful.tag.incnmaster(1) end, "Master num+"),
+    awful.key({modkey, "Shift"}, "l", function() awful.tag.incnmaster(-1) end, "Master num-"),
     awful.key({modkey, "Control"}, "h", function() awful.tag.incncol(1) end, "Column +"),
     awful.key({modkey, "Control"}, "l", function() awful.tag.incncol(-1) end, "Column -"),
     awful.key({modkey}, "space",

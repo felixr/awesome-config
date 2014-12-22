@@ -2,6 +2,7 @@ require("awful")
 require("awful.autofocus")
 require("beautiful")
 require("naughty")
+require("vain")
 
 tb = require('toolbox')
 dir = {}
@@ -39,7 +40,10 @@ shifty.config.layouts = {
     awful.layout.suit.max,
     awful.layout.suit.fair,
     awful.layout.suit.floating,
-    mylayout,
+    vain.layout.cascadebrowse,
+    vain.layout.centerwork,
+    vain.layout.termfair,
+    -- mylayout,
 }
 
 -- Shifty configuration
@@ -95,7 +99,7 @@ shifty.config.defaults = {
 -- sloppy focus ?
 shifty.config.sloppy = false
 -- Add titlebars to all clients when the float?
-shifty.config.float_bars = true
+-- shifty.config.float_bars = true
 shifty.modkey = modkey
 
 -- Mouse bindings
@@ -148,6 +152,27 @@ dofile(tb.path.join(dir.config, 'keys.lua'))
 
 shifty.taglist = panel.taglist
 shifty.init()
+
+
+client.add_signal("manage", function (c, startup)
+  if (awful.layout.get(c.screen) ==  awful.layout.suit.floating)  
+   then
+    awful.titlebar.add(c, { modkey = modkey }) 
+   end
+
+--{{{ Item added to cause floating:
+c:add_signal("property::floating", function(c)
+  if awful.layout.get(c.screen) ==  awful.layout.suit.floating or awful.client.floating.get(c)
+   then
+    awful.titlebar.add(c, { modkey = modkey })
+   else
+     if not awful.client.property.get(c, "sticky_titlebar") then
+       awful.titlebar.remove(c, { modkey = modkey })
+     end
+   end
+end)
+end)
+
 
 client.add_signal("focus",
                   function(c)
