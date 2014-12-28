@@ -294,7 +294,7 @@ function new(t, args)
             layout = awful.widget.layout.horizontal.leftright
         },
         p.widgets.clock,
-        -- battery2(),
+        battery2(),
         p.widgets.layoutinfo,
         p.widgets.layoutbox,
         p.widgets.systray,
