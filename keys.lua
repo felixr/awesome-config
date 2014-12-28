@@ -68,10 +68,10 @@ end
 globalkeys = awful.util.table.join(
     keydoc.group("Navigation"), --{{{
 
-    awful.key({modkey,}, "h", change_focus("left"), "Focus left"),
-    awful.key({modkey,}, "l", change_focus("right"), "Focus right"),
-    awful.key({modkey,}, "j", change_focus("down"), "Focus down"),
-    awful.key({modkey,}, "k", change_focus("up"), "Focus up"),
+    awful.key({modkey, "Mod1"}, "h", change_focus("left"), "Focus left"),
+    awful.key({modkey, "Mod1"}, "l", change_focus("right"), "Focus right"),
+    awful.key({modkey, "Mod1"}, "j", change_focus("down"), "Focus down"),
+    awful.key({modkey, "Mod1"}, "k", change_focus("up"), "Focus up"),
 
     -- Layout manipulation
     -- awful.key({modkey, "Shift"}, "j", function() awful.client.swap.bydirection("down") end, "Swap down"),
@@ -151,10 +151,13 @@ globalkeys = awful.util.table.join(
     awful.key({modkey, "Shift"}, "q", awesome.quit, "Quit"),
     -- }}}
 
-    keydoc.group("Layout"), -- {{{
+    keydoc.group("Client size"), -- {{{
     awful.key({modkey,}, "=", function() awful.tag.setmwfact(0.5) end, "Master 50-50"),
-    -- awful.key({modkey,}, "l", function() awful.tag.incmwfact(0.05) end, "Master  size+"),
-    -- awful.key({modkey,}, "h", function() awful.tag.incmwfact(-0.05) end, "Master size-"),
+    awful.key({modkey,}, "l", function() awful.tag.incmwfact(0.05) end, "Master  size+"),
+    awful.key({modkey,}, "h", function() awful.tag.incmwfact(-0.05) end, "Master size-"),
+    awful.key({modkey,}, "k", function () awful.client.incwfact( 0.05) end, "Slave size+"),
+    awful.key({modkey,}, "j", function () awful.client.incwfact(-0.05) end, "Slave size-"),
+    keydoc.group("Layout"), -- {{{
     awful.key({modkey, "Shift"}, "h", function() awful.tag.incnmaster(1) end, "Master num+"),
     awful.key({modkey, "Shift"}, "l", function() awful.tag.incnmaster(-1) end, "Master num-"),
     awful.key({modkey, "Control"}, "h", function() awful.tag.incncol(1) end, "Column +"),
@@ -200,10 +203,10 @@ globalkeys = awful.util.table.join(
     keydoc.group("Misc"), ---{{{
     -- awful.key({modkey}, "u", function () hints.focus() end, "Show hints"),
 
-    awful.key({modkey}, "Up", function (c) awful.util.spawn("transset --actual --inc 0.1") end),
-    awful.key({modkey}, "Down", function (c) awful.util.spawn("transset --actual --dec 0.1") end),
+    awful.key({modkey, "Mod1"}, "Up", function (c) awful.util.spawn("transset --actual --inc 0.1") end, "- transp."),
+    awful.key({modkey, "Mod1"}, "Down", function (c) awful.util.spawn("transset --actual --dec 0.1") end, "+ transp."),
     awful.key({modkey}, "e", revelation, "Show all windows"), -- all clients
-    awful.key({modkey}, "j", hints.focus, "Show window hints"),
+    awful.key({modkey}, "z", hints.focus, "Show window hints"),
     awful.key({modkey, "Shift"},          -- only terminals
               "e",
               function() revelation({class=client.focus.class}) end, "Show same class "
