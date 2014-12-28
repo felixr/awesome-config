@@ -1,1 +1,1 @@
-/usr/local/google/home/riedel/misc-dev/hints/hints.lua
+/home/felix/work/hints/hints.lua
